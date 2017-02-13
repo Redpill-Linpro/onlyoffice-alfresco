@@ -57,10 +57,16 @@ public class Prepare extends AbstractWebScript {
 
             response.setContentType("application/json; charset=utf-8");
             response.setContentEncoding("UTF-8");
+            String alfrescoUrl = null;
+            if(globalProp.containsKey("onlyoffice.alfrescourl")) {
+                alfrescoUrl = globalProp.get("onlyoffice.alfrescourl");
+            } else {
+                alfrescoUrl = UrlUtil.getAlfrescoUrl(sysAdminParams);
+            }
 
-            String contentUrl = UrlUtil.getAlfrescoUrl(sysAdminParams) + "/s/api/node/content/workspace/SpacesStore/" + nodeRef.getId() + "?alf_ticket=" + authenticationService.getCurrentTicket();
+            String contentUrl = alfrescoUrl + "/s/api/node/content/workspace/SpacesStore/" + nodeRef.getId() + "?alf_ticket=" + authenticationService.getCurrentTicket();
             String key = nodeRef.getId() + "_" + dateFormat.format(properties.get(ContentModel.PROP_MODIFIED));
-            String callbackUrl = UrlUtil.getAlfrescoUrl(sysAdminParams) + "/s/parashift/onlyoffice/callback?nodeRef=" + nodeRef.toString() + "&alf_ticket=" + authenticationService.getCurrentTicket();
+            String callbackUrl = alfrescoUrl + "/s/parashift/onlyoffice/callback?nodeRef=" + nodeRef.toString() + "&alf_ticket=" + authenticationService.getCurrentTicket();
 
             JSONObject responseJson = new JSONObject();
             responseJson.put("docUrl", contentUrl);
