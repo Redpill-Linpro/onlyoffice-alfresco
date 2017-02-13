@@ -59,7 +59,7 @@ public class Prepare extends AbstractWebScript {
             response.setContentEncoding("UTF-8");
             String alfrescoUrl = null;
             if(globalProp.containsKey("onlyoffice.alfrescourl")) {
-                alfrescoUrl = globalProp.get("onlyoffice.alfrescourl");
+                alfrescoUrl = (String) globalProp.get("onlyoffice.alfrescourl");
             } else {
                 alfrescoUrl = UrlUtil.getAlfrescoUrl(sysAdminParams);
             }
