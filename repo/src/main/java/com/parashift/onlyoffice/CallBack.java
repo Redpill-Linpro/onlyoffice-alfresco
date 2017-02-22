@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 /**
  * Created by cetra on 20/10/15.
@@ -37,6 +38,9 @@ public class CallBack extends AbstractWebScript {
 
     @Resource(name = "policyBehaviourFilter")
     BehaviourFilter behaviourFilter;
+
+    @Resource(name = "global-properties")
+    Properties globalProp;
 
     @Autowired
     ContentService contentService;
@@ -96,7 +100,10 @@ public class CallBack extends AbstractWebScript {
 
     private void updateNode(NodeRef nodeRef, String url) {
         logger.debug("Retrieving URL:{}", url);
-
+        //Substitute the callback URL in case of a reverse proxy which requires special authentication.
+        if(globalProp.containsKey("onlyoffice.url.updateNodeSubstitute") && globalProp.containsKey("onlyoffice.url")) {
+            url = url.replace((String) globalProp.get("onlyoffice.url"), (String) globalProp.get("onlyoffice.url.updateNodeSubstitute"));
+        } 
         try {
             InputStream in = new URL( url ).openStream();
             contentService.getWriter(nodeRef, ContentModel.PROP_CONTENT, true).putContent(in);
