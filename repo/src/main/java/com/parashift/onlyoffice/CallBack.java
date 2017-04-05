@@ -103,6 +103,7 @@ public class CallBack extends AbstractWebScript {
         //Substitute the callback URL in case of a reverse proxy which requires special authentication.
         if(globalProp.containsKey("onlyoffice.url.updateNodeSubstitute") && globalProp.containsKey("onlyoffice.url")) {
             url = url.replace((String) globalProp.get("onlyoffice.url"), (String) globalProp.get("onlyoffice.url.updateNodeSubstitute"));
+            logger.debug("Substituted retrieving URL:{}", url);
         } 
         try {
             InputStream in = new URL( url ).openStream();
